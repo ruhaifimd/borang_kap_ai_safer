@@ -150,8 +150,10 @@ function apiCall(action, fields, done){
     input.type = 'hidden';
     input.name = k;
     input.value = all[k] === undefined || all[k] === null ? '' : String(all[k]);
+    input.setAttribute('value', input.value);
     form.appendChild(input);
   });
+  form.setAttribute('action', API_URL);
   document.body.appendChild(form);
   var finished = false;
   function cleanup(){
@@ -163,7 +165,7 @@ function apiCall(action, fields, done){
     form.remove();
   }
   function onMessage(e){
-    if (e.source !== frame.contentWindow || !e.data || e.data.source !== 'AI-SAFER') return;
+    if (!e.data || e.data.source !== 'AI-SAFER') return;
     var result = e.data.result || {ok:false, msg:'Respons pelayan tidak sah.'};
     cleanup();
     done(result);
