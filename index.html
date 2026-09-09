@@ -1,8 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html lang="ms">
 <head>
 <base target="_top">
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#092b3c">
+<meta name="description" content="Soal selidik pengetahuan, sikap dan amalan kesiapsiagaan banjir untuk peserta kajian AI-SAFER Fasa 3.">
+<title>AI-SAFER | Soal Selidik KAP · Fasa 3</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;800&family=DM+Sans:wght@400;500;700&family=Fira+Code:wght@500&display=swap" rel="stylesheet">
@@ -106,23 +110,136 @@ button.back{background:none;border:1.5px solid var(--line);border-radius:var(--r
 .center{text-align:center;padding:52px 24px}
 .center .big{font-size:38px;margin-bottom:10px}
 .warn{background:#FEF2F2;border-left:3px solid #DC2626;border-radius:0 var(--r) var(--r) 0;padding:13px 15px;font-size:14px;color:#991B1B;margin-bottom:14px}
+
+/* AI-SAFER · coastal navy, clear water, generous touch targets */
+:root{--navy:#102f40;--sage:#087e80;--sage-soft:#eaf8f6;--slate:#516b78;--line:#d6e3e8;--wash:#f1f6f8;--r:14px;--shadow:0 12px 40px rgba(13,47,65,.055)}
+body{padding-bottom:130px;background:radial-gradient(ellipse at 90% 0%,#dcefed 0,transparent 42%),var(--wash)}
+body[data-view="entry"],body[data-view="status"]{padding-bottom:32px}
+button,input,select,textarea{font:inherit}
+button{touch-action:manipulation}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #128e98;outline-offset:4px}
+.skip{position:absolute;top:-100px;left:20px;background:#fff;color:var(--navy);padding:12px 18px;z-index:100}
+.skip:focus{top:12px}
+#top{background:#092b3c;color:#fff;border:0;box-shadow:0 4px 18px #092b3c12}
+#water{position:absolute;bottom:0;width:100%;height:4px;background:#ffffff15}
+#fill{background:linear-gradient(90deg,#14b8a6,#73e1cc)}
+#bar{max-width:1180px;margin:auto;padding:19px 28px;align-items:center;gap:18px;min-height:88px}
+.brand-lockup{display:flex;align-items:center;gap:13px;min-width:0}
+.brand-symbol{width:43px;height:43px;border:1px solid #62d5ce66;border-radius:14px;display:grid;place-items:center;background:#ffffff08;flex-shrink:0;color:#6fe4d3}
+.brand-symbol svg{width:27px;height:27px}
+.brand{display:block;font-size:21px;letter-spacing:.025em;line-height:1.3}
+.brand-sub{display:block;color:#c0d8e1;font-size:13px;line-height:1.5;margin-top:2px}
+.project-tag{margin-left:auto;border:1px solid #ffffff30;padding:7px 12px;border-radius:100px;font-size:12px;letter-spacing:.09em;color:#d7e9ef;white-space:nowrap}
+#step{color:#d7e9ef;font-size:14px;margin-left:auto}
+#step:empty{display:none}
+body[data-view="survey"] .project-tag{display:none}
+main{max-width:840px;padding:34px 24px 0}
+main:focus{outline:none}
+body[data-view="entry"] main{max-width:1180px;padding-top:52px}
+.card{border-radius:20px;padding:30px;margin-bottom:20px}
+h1{font-size:30px;line-height:1.3;overflow-wrap:anywhere}
+h2{font-size:24px;line-height:1.35;overflow-wrap:anywhere}
+.sub{font-size:16px;line-height:1.7}
+.mini{font-size:14px;line-height:1.6}
+.en{font-size:14px;line-height:1.6;margin-top:6px}
+.note{border:1px solid #c9e6e1;border-left:3px solid var(--sage);border-radius:12px;font-size:15px;line-height:1.7;padding:16px 18px}
+.entry-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:64px;align-items:center}
+.eyebrow{font-weight:700;font-size:12px;letter-spacing:.13em;text-transform:uppercase;color:var(--sage);margin:0 0 16px;display:block}
+.story h1{font-size:clamp(34px,3.8vw,49px);line-height:1.14;letter-spacing:-.045em;max-width:550px;margin:0 0 22px}
+.story h1 em{font-style:normal;color:var(--sage)}
+.story>p{font-size:17px;color:var(--slate);line-height:1.75;max-width:470px}
+.study-pills{display:flex;flex-wrap:wrap;gap:8px;margin:24px 0 28px}
+.study-pills span{border:1px solid #c9dade;border-radius:100px;padding:7px 12px;font-size:13px;color:#345565;background:#ffffff90}
+.session-path{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;border-top:1px solid #ccdde2;padding-top:23px;margin:0;list-style:none}
+.session-path li{position:relative;min-width:0}
+.session-path strong{display:block;font-size:14px;margin:8px 0 4px}
+.session-path small{font-size:13px;color:var(--slate);line-height:1.5;display:block}
+.session-no{color:var(--sage);font:500 12px 'Fira Code',monospace}
+.login-card{padding:38px;border:1px solid #fff;box-shadow:0 24px 64px #0d304212;position:relative;overflow:hidden;margin:0}
+.login-card:before{content:"";height:4px;background:linear-gradient(90deg,#087e80,#6edbd0);position:absolute;top:0;left:0;right:0}
+.login-card h2{font-size:27px;margin-bottom:12px;letter-spacing:-.03em}
+.login-card label.f{margin-top:25px;font-size:15px;font-weight:700}
+input[type=tel],input[type=text],input[type=number],input[type=email],textarea,select,#d_prof{width:100%;min-width:0;min-height:52px;font-family:'DM Sans',system-ui,sans-serif;font-size:16px!important;color:var(--navy);border:1.5px solid var(--line);border-radius:12px!important;padding:13px 15px!important;background:#fcfefe}
+input::placeholder{color:#718591;opacity:1}
+#masukTel{font-size:19px!important;letter-spacing:.03em;padding:16px!important;min-height:60px}
+.privacy-note{display:flex;align-items:flex-start;gap:9px;margin-top:13px;font-size:13px;line-height:1.6;color:var(--slate)}
+.privacy-note svg{width:17px;height:20px;flex-shrink:0;color:var(--sage);margin-top:1px}
+.login-card button.go{margin-top:24px!important;display:flex;align-items:center;justify-content:center;gap:18px}
+.login-help{border-top:1px solid var(--line);margin:25px 0 0;padding-top:20px;font-size:14px;color:var(--slate);line-height:1.65}
+.site-caption{text-align:center;color:var(--slate);font-size:13px;margin:34px 0 0}
+.section-trail{display:flex;gap:6px;margin:0 0 24px;padding:0;list-style:none}
+.section-trail li{flex:1;min-width:0;border-top:3px solid #d1dfe4;padding:10px 2px 0;color:var(--slate);font-size:12px;line-height:1.4}
+.section-trail li.active{border-color:var(--sage);color:#086d70;font-weight:700}
+.section-trail li.complete{border-color:#78b9b4}
+.section-trail .trail-number{font-family:'Fira Code',monospace;font-size:11px;display:block;margin-bottom:4px;opacity:.8}
+.section-heading{background:#092b3c;color:white;border-color:#092b3c;padding:26px 30px}
+.section-heading h2{font-size:14px;text-transform:uppercase;letter-spacing:.1em;color:#8eddd4;margin-bottom:6px}
+.section-heading .sub{font-family:'Plus Jakarta Sans',sans-serif;font-size:25px;font-weight:800;color:white;line-height:1.4}
+.section-heading .sub span{font-family:'DM Sans',sans-serif;font-size:16px;font-weight:400;color:#c0d8e1}
+.q{padding:28px 0;scroll-margin-top:115px}
+.qh{gap:14px;margin-bottom:18px}
+.qn{background:#eaf3f5;border:1px solid #d5e5e9;width:32px;height:32px;display:grid;place-items:center;border-radius:10px;font-size:13px;padding:0}
+.qt{font-size:17px;line-height:1.65;min-width:0}
+.opts{gap:10px}
+.opt{font-family:'DM Sans',sans-serif;font-size:14px;color:#456271;min-height:68px;border-radius:12px;padding:13px 10px;min-width:0}
+.opt .n{font-size:17px}
+.opts.stack .opt{min-height:52px;padding:14px 16px;position:relative;padding-right:42px}
+.opts.stack .opt:after{content:"";position:absolute;right:16px;width:16px;height:16px;border:1.5px solid #aec3ca;border-radius:50%;background:white}
+.opts.stack .opt[aria-pressed="true"]:after{content:"✓";background:var(--sage);border-color:var(--sage);color:white;font-size:11px;display:grid;place-items:center}
+.opt[aria-pressed="true"]{border-color:var(--sage);color:#065e63;background:#e8f7f4;box-shadow:0 0 0 1px var(--sage)}
+.opt[aria-pressed="true"] .n{color:#065e63}
+@media(hover:hover){.opt:hover{border-color:#5c9fa1;background:#f3faf9}button.go:hover{background:#056b6e;box-shadow:0 8px 22px #087e8024}button.back:hover{background:#eef6f7}}
+label.f{font-size:16px;margin:26px 0 12px;line-height:1.65}
+label.f:first-child{margin-top:0}
+.rep>*{min-width:0;flex:1}
+.addbtn{min-height:48px;border-color:#a9c9cc;background:#f6fbfa}
+.grid5{padding-top:24px;margin-top:24px}
+.gt{font-size:16px;line-height:1.6}
+footer{padding:14px 24px calc(12px + env(safe-area-inset-bottom));box-shadow:0 -8px 30px #0a304208;background:#fffffffa}
+.fin{max-width:792px}
+button.go{background:#087e80;font-size:16px;padding:17px 24px;min-height:56px;transition:background .15s,box-shadow .15s}
+button.back{font-size:16px;padding:16px 24px;min-height:56px;color:var(--navy)}
+#saved{font-size:13px;line-height:1.5;min-height:20px;height:auto;margin-top:7px;max-width:792px;margin-left:auto;margin-right:auto}
+.center{max-width:600px;margin:24px auto;padding:42px 32px}
+.center .big{width:76px;height:76px;margin:0 auto 22px;display:grid;place-items:center;border-radius:24px;background:#e8f7f4;color:var(--sage);font-size:34px}
+.warn{border-radius:12px;font-size:15px;line-height:1.6}
+.hidden{display:none!important}
+@media(min-width:700px){.opts[data-key^="C"]{display:grid;grid-template-columns:repeat(5,minmax(0,1fr))}.opts[data-key^="C"] .opt{flex-direction:column;text-align:center;justify-content:flex-start;padding:17px 8px 30px;gap:9px}.opts[data-key^="C"] .opt:after{bottom:9px;right:calc(50% - 8px);width:13px;height:13px}}
+@media(max-width:900px){.entry-grid{gap:28px}.login-card{padding:28px}.story h1{font-size:38px}}
+@media(max-width:700px){
+ #bar{padding:14px 18px;min-height:78px;gap:10px;flex-wrap:wrap}.brand{font-size:18px}.brand-sub{font-size:12px}.brand-symbol{width:37px;height:37px;border-radius:12px}.brand-lockup{gap:10px}.project-tag{display:none}#step{font-size:12px}
+ main{padding:22px 16px 0}body[data-view="entry"] main{padding-top:28px}.entry-grid{grid-template-columns:1fr;gap:23px}.story h1{font-size:34px;max-width:480px;margin-bottom:13px}.story>p{font-size:16px;line-height:1.6;margin-bottom:0}.eyebrow{margin-bottom:12px;font-size:11px}.study-pills{margin:18px 0 0;gap:7px}.study-pills span{padding:5px 10px;font-size:12px}.session-path{display:none}.login-card{padding:27px 23px}.login-card h2{font-size:25px}.login-help{margin-top:20px;padding-top:17px}.site-caption{font-size:12px;margin-top:24px}
+ .card{padding:24px 20px;border-radius:17px}h1{font-size:26px}.section-heading{padding:22px}.section-heading .sub{font-size:22px}.section-trail{gap:7px;margin-bottom:20px}.section-trail li{font-size:11px}.qt{font-size:16px}.qh{gap:10px}.qn{width:28px;height:28px;border-radius:9px;font-size:12px}.q{padding:25px 0}.opt{font-size:14px;padding:12px 6px}.opts{gap:8px}.note{font-size:14px;padding:14px}.rep{flex-direction:column;padding-bottom:8px}.rep+.rep{border-top:1px solid var(--line);padding-top:10px}footer{padding-left:16px;padding-right:16px}.center{padding:34px 24px}.sub{font-size:15px}
+}
+@media(max-width:400px){.story h1{font-size:30px}.card{padding:22px 17px}.brand-sub{font-size:11px}.section-trail li{font-size:10px}button.back{padding:16px}.opts{gap:6px}.opt{font-size:13px}}
+@media(max-width:700px){.entry-grid .login-card{order:-1}.story{padding:12px 4px 0}.story h1{font-size:28px}.story>p{font-size:15px}.section-trail li{font-size:12px}.section-trail .trail-number{font-size:12px}}
+@media(max-width:450px){.section-trail li:not(.active) .trail-label{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}.section-trail li.active{flex:2.5}.section-trail li.active .trail-label{overflow-wrap:anywhere}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important;scroll-behavior:auto!important}}
+h1[tabindex="-1"],h2[tabindex="-1"]{outline:none}
 </style>
 </head>
 <body>
 
-<div id="top">
+<a class="skip" href="#app">Langkau ke kandungan</a>
+<header id="top">
   <div id="water"><div id="fill"></div><div id="crest"></div></div>
-  <div id="bar"><span class="brand">AI-SAFER</span><span id="step"></span></div>
-</div>
+  <div id="bar">
+    <div class="brand-lockup">
+      <span class="brand-symbol" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 4 4 7 8 9 4-2 8-5 8-9V6l-8-3Z"/><path d="m8 12 3 3 5-6"/></svg></span>
+      <div><span class="brand">AI-SAFER</span><span class="brand-sub">Simulator Banjir Berkuasa AI</span></div>
+    </div>
+    <span class="project-tag">FASA 3 · KAJIAN KAP</span><span id="step" aria-live="polite"></span>
+  </div>
+</header>
 
-<main id="app"></main>
+<main id="app" tabindex="-1"></main>
 
 <footer id="foot" class="hidden">
   <div class="fin">
     <button class="back hidden" id="btnBack">Kembali</button>
     <button class="go" id="btnNext">Seterusnya</button>
   </div>
-  <div id="saved">Disimpan</div>
+  <div id="saved" role="status" aria-live="polite">Disimpan</div>
 </footer>
 
 <script>
@@ -440,7 +557,17 @@ function build(){
 
 function render(){
   var s=screens[idx];
+  document.body.dataset.view='survey';
   app.innerHTML=s.html();
+  var names={intro:'Pengenalan',A:'Demografi',B:'Pengetahuan',C:'Sikap',D:'Amalan'};
+  var trail=document.createElement('ol');
+  trail.className='section-trail';
+  trail.setAttribute('aria-label','Kemajuan borang');
+  trail.innerHTML=screens.map(function(screen,i){
+    return '<li class="'+(i===idx?'active':(i<idx?'complete':''))+'"'+(i===idx?' aria-current="step"':'')+'><span class="trail-number">0'+(i+1)+'</span><span class="trail-label">'+names[screen.id]+'</span></li>';
+  }).join('');
+  app.prepend(trail);
+  if(s.id!=='intro') app.querySelector('.card').classList.add('section-heading');
   window.scrollTo(0,0);
 
   app.querySelectorAll('.opts[data-key]').forEach(function(g){
@@ -479,6 +606,12 @@ function render(){
   });
 
   if(s.after)s.after();
+  // Associate existing form controls with their visible instructions.
+  var age=document.getElementById('d_umur'), prof=document.getElementById('d_prof');
+  [age,prof].forEach(function(el){if(el&&el.previousElementSibling)el.previousElementSibling.setAttribute('for',el.id);});
+  app.querySelectorAll('input[placeholder]').forEach(function(el){el.setAttribute('aria-label',el.placeholder);});
+  var heading=app.querySelector('h1,h2');
+  if(heading){heading.setAttribute('tabindex','-1');heading.focus({preventScroll:true});}
 
   btnBack.classList.toggle('hidden',idx===0);
   btnNext.textContent = (idx===screens.length-1) ? 'Hantar jawapan' : 'Seterusnya';
@@ -573,6 +706,7 @@ function submit(){
 }
 
 function done(){
+  document.body.dataset.view='status';
   progress(1);
   foot.classList.add('hidden');
   document.getElementById('step').textContent='Selesai';
@@ -587,6 +721,7 @@ function done(){
 
 /* ============ MULA ============ */
 function renderBlocked(){
+  document.body.dataset.view='status';
   var ok = own('ok')===true, stage = own('stage'), sub = own('sub');
   progress(stage==='SELESAI'?1:0);
   document.getElementById('step').textContent='';
@@ -600,18 +735,31 @@ function renderBlocked(){
 }
 
 function renderMasuk(err){
+  document.body.dataset.view='entry';
   progress(0);
   document.getElementById('step').textContent='';
   foot.classList.add('hidden');
-  app.innerHTML='<div class="card">'
-    +'<h1>Soal selidik AI-SAFER</h1>'
-    +'<p class="sub" style="margin-bottom:20px">Masukkan nombor telefon anda untuk meneruskan. '
-    +'Kami menggunakannya untuk mengenal pasti sesi anda sahaja.</p>'
-    +(err?'<div class="warn">'+esc(err)+'</div>':'')
-    +'<input type="tel" id="masukTel" inputmode="numeric" placeholder="Contoh: 0123456789" autocomplete="tel">'
-    +'<p class="mini">Nombor telefon tidak disimpan bersama jawapan anda.</p>'
+  app.innerHTML='<div class="entry-grid">'
+    +'<section class="story" aria-labelledby="welcome-title">'
+    +'<span class="eyebrow">Kajian AI-SAFER · Fasa 3</span>'
+    +'<h1 id="welcome-title">Bersedia menghadapi banjir.<br><em>Bermula dengan anda.</em></h1>'
+    +'<p>Soal selidik pengetahuan, sikap dan amalan untuk memahami kesiapsiagaan anda menghadapi bencana banjir.</p>'
+    +'<div class="study-pills"><span>± 12 minit setiap sesi</span><span>3 sesi kajian</span></div>'
+    +'<ol class="session-path" aria-label="Tiga sesi kajian">'
+    +'<li><span class="session-no">01 / T0</span><strong>Sebelum simulator</strong><small>Kenali kesiapsiagaan anda.</small></li>'
+    +'<li><span class="session-no">02 / T1</span><strong>Selepas simulator</strong><small>Jawab selepas selesai.</small></li>'
+    +'<li><span class="session-no">03 / T2</span><strong>4 minggu kemudian</strong><small>Kembali untuk sesi susulan.</small></li></ol></section>'
+    +'<section class="card login-card" aria-labelledby="login-title">'
+    +'<span class="eyebrow">Portal peserta · Soal selidik KAP</span>'
+    +'<h2 id="login-title">Selamat datang.</h2>'
+    +'<p class="sub">Masukkan nombor telefon yang didaftarkan untuk mula atau sambung sesi anda.</p>'
+    +(err?'<div class="warn" role="alert" style="margin-top:18px">'+esc(err)+'</div>':'')
+    +'<label class="f" for="masukTel">Nombor telefon berdaftar</label>'
+    +'<input type="tel" id="masukTel" inputmode="tel" placeholder="Contoh: 0123456789" autocomplete="tel" aria-describedby="phone-privacy">'
+    +'<p class="privacy-note" id="phone-privacy"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="5" y="10" width="14" height="11" rx="3"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><span>Nombor telefon digunakan untuk mengenal pasti sesi dan tidak disimpan bersama jawapan anda.</span></p>'
     +'<button class="go" id="btnMasuk" style="width:100%;margin-top:18px">Teruskan</button>'
-    +'</div>';
+    +'<p class="login-help">Kembali untuk sesi seterusnya? Gunakan pautan dan nombor telefon yang sama. Jika perlukan bantuan, hubungi penyelidik.</p>'
+    +'</section></div><p class="site-caption">AI-SAFER &nbsp;·&nbsp; Pengetahuan. Sikap. Amalan.</p>';
 
   var inp=document.getElementById('masukTel');
   var btn=document.getElementById('btnMasuk');
@@ -626,10 +774,12 @@ function renderMasuk(err){
   }
   btn.addEventListener('click',go);
   inp.addEventListener('keydown',function(e){ if(e.key==='Enter') go(); });
-  inp.focus();
+  // Do not open the phone keyboard before a mobile visitor chooses to type.
+  if(err || window.matchMedia('(min-width: 701px)').matches) inp.focus({preventScroll:true});
 }
 
 function confirmNama(){
+  document.body.dataset.view='status';
   app.innerHTML='<div class="card center" style="padding:44px 24px">'
     +'<p class="sub" style="margin-bottom:6px">Adakah ini anda?</p>'
     +'<h2 style="margin-bottom:22px">'+esc(own('nama'))+'</h2>'
