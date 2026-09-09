@@ -126,7 +126,7 @@ button.back{background:none;border:1.5px solid var(--line);border-radius:var(--r
 </footer>
 
 <script>
-var STATE = <?!= JSON.stringify(STATE) ?>;
+var STATE = {ok:true, stage:'MASUK'};
 if (typeof STATE === 'string') { try { STATE = JSON.parse(STATE); } catch(e) { STATE = {ok:false}; } }
 
 var API_URL = 'https://script.google.com/macros/s/AKfycbwbxD5UumyRn5DLZHIMd0ro8H5XgHf25n5eE4yOQ_YdsDOcGlTgzLqCiRGKxH0xqlZ2Zw/exec';
