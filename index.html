@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html>
+<head>
+<base target="_top">
+<meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;800&family=DM+Sans:wght@400;500;700&family=Fira+Code:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0F172A;
+  --sage:#059669;
+  --sage-soft:#ECFDF5;
+  --slate:#64748B;
+  --line:#E2E8F0;
+  --paper:#FFFFFF;
+  --wash:#F8FAFC;
+  --r:8px;
+  --shadow:0 1px 2px rgba(15,23,42,.04), 0 8px 24px rgba(15,23,42,.06);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  background:var(--wash);
+  color:var(--navy);
+  font-family:'DM Sans',system-ui,sans-serif;
+  font-size:16px;
+  line-height:1.55;
+  padding-bottom:96px;
+}
+h1,h2,h3,.brand{font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-weight:800;letter-spacing:-.02em}
+.mono{font-family:'Fira Code',monospace;font-weight:500}
+
+/* ---- rising water progress ---- */
+#top{position:sticky;top:0;z-index:20;background:var(--paper);border-bottom:1px solid var(--line)}
+#water{position:relative;height:5px;background:#EEF2F6;overflow:hidden}
+#fill{position:absolute;inset:0 auto 0 0;width:0;background:linear-gradient(90deg,#047857,#059669 70%,#34D399);transition:width .45s cubic-bezier(.4,0,.2,1)}
+#crest{position:absolute;top:0;bottom:0;width:26px;transform:translateX(-13px);left:0;
+  background:radial-gradient(circle at 50% 120%, rgba(52,211,153,.9), transparent 70%);
+  transition:left .45s cubic-bezier(.4,0,.2,1)}
+@media (prefers-reduced-motion:reduce){#fill,#crest{transition:none}}
+#bar{display:flex;align-items:baseline;gap:10px;padding:12px 20px}
+.brand{font-size:15px}
+#step{margin-left:auto;font-size:12.5px;color:var(--slate)}
+
+/* ---- layout ---- */
+main{max-width:640px;margin:0 auto;padding:24px 20px 0}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:24px 20px;margin-bottom:16px}
+h1{font-size:24px;line-height:1.25;margin:0 0 12px}
+h2{font-size:19px;margin:0 0 6px}
+.sub{color:var(--slate);font-size:14px;margin:0}
+p{margin:0 0 14px}
+.en{color:var(--slate);font-style:italic;font-size:14.5px;display:block;margin-top:3px}
+.note{background:var(--sage-soft);border-left:3px solid var(--sage);border-radius:0 var(--r) var(--r) 0;padding:14px 16px;font-size:14.5px;margin:0 0 18px}
+
+/* ---- items ---- */
+.q{padding:20px 0;border-top:1px solid var(--line)}
+.q:first-child{border-top:0;padding-top:4px}
+.qh{display:flex;gap:12px;margin-bottom:14px}
+.qn{flex:0 0 auto;font-size:13px;color:var(--sage);padding-top:2px}
+.qt{flex:1;font-size:15.5px;line-height:1.5}
+.opts{display:flex;gap:8px}
+.opts.stack{flex-direction:column}
+.opt{
+  flex:1;background:var(--paper);border:1.5px solid var(--line);border-radius:var(--r);
+  padding:12px 8px;text-align:center;cursor:pointer;font-size:13px;color:var(--slate);
+  display:flex;flex-direction:column;align-items:center;gap:4px;min-height:60px;justify-content:center;
+  transition:border-color .15s,background .15s,color .15s;
+}
+.opts.stack .opt{flex-direction:row;justify-content:flex-start;text-align:left;min-height:0;padding:13px 15px;gap:10px}
+.opt .n{font-family:'Fira Code',monospace;font-weight:500;font-size:15px;color:var(--navy)}
+.opt:hover{border-color:#CBD5E1}
+.opt[aria-pressed="true"]{background:var(--sage-soft);border-color:var(--sage);color:#065F46}
+.opt[aria-pressed="true"] .n{color:var(--sage)}
+.opt:focus-visible{outline:2px solid var(--sage);outline-offset:2px}
+.q.err .qt{color:#B91C1C}
+.q.err .opt{border-color:#FCA5A5}
+
+input[type=text],input[type=number],input[type=email],textarea{
+  width:100%;font-family:'DM Sans',sans-serif;font-size:15px;color:var(--navy);
+  border:1.5px solid var(--line);border-radius:var(--r);padding:11px 13px;background:var(--paper);
+}
+input:focus,textarea:focus{outline:none;border-color:var(--sage)}
+label.f{display:block;font-size:14px;margin:16px 0 6px;font-weight:500}
+.row2{display:flex;gap:10px}
+.row2 > *{flex:1}
+.mini{font-size:13px;color:var(--slate);margin:6px 0 0}
+.rep{display:flex;gap:8px;margin-bottom:8px}
+.addbtn{background:none;border:1px dashed var(--line);border-radius:var(--r);padding:10px;width:100%;
+  color:var(--sage);font-family:'DM Sans',sans-serif;font-size:14px;cursor:pointer}
+.grid5{border-top:1px solid var(--line);padding-top:16px;margin-top:4px}
+.grid5:first-of-type{border-top:0}
+.gt{font-size:14.5px;margin-bottom:10px}
+
+/* ---- footer ---- */
+footer{position:fixed;left:0;right:0;bottom:0;background:var(--paper);border-top:1px solid var(--line);
+  padding:14px 20px calc(14px + env(safe-area-inset-bottom));z-index:20}
+.fin{max-width:640px;margin:0 auto;display:flex;gap:10px;align-items:center}
+button.go{flex:1;background:var(--sage);color:#fff;border:0;border-radius:var(--r);padding:15px;
+  font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:15.5px;cursor:pointer}
+button.go:disabled{background:#94A3B8;cursor:default}
+button.back{background:none;border:1.5px solid var(--line);border-radius:var(--r);padding:15px 18px;
+  font-family:'DM Sans',sans-serif;font-size:15px;color:var(--slate);cursor:pointer}
+#saved{font-size:12.5px;color:var(--sage);text-align:center;margin-top:8px;height:16px;opacity:0;transition:opacity .3s}
+.hidden{display:none}
+.center{text-align:center;padding:52px 24px}
+.center .big{font-size:38px;margin-bottom:10px}
+.warn{background:#FEF2F2;border-left:3px solid #DC2626;border-radius:0 var(--r) var(--r) 0;padding:13px 15px;font-size:14px;color:#991B1B;margin-bottom:14px}
+</style>
+</head>
+<body>
+
+<div id="top">
+  <div id="water"><div id="fill"></div><div id="crest"></div></div>
+  <div id="bar"><span class="brand">AI-SAFER</span><span id="step"></span></div>
+</div>
+
+<main id="app"></main>
+
+<footer id="foot" class="hidden">
+  <div class="fin">
+    <button class="back hidden" id="btnBack">Kembali</button>
+    <button class="go" id="btnNext">Seterusnya</button>
+  </div>
+  <div id="saved">Disimpan</div>
+</footer>
+
+<script>
+var STATE = <?!= JSON.stringify(STATE) ?>;
+if (typeof STATE === 'string') { try { STATE = JSON.parse(STATE); } catch(e) { STATE = {ok:false}; } }
+
+var API_URL = 'https://script.google.com/macros/s/AKfycbwbxD5UumyRn5DLZHIMd0ro8H5XgHf25n5eE4yOQ_YdsDOcGlTgzLqCiRGKxH0xqlZ2Zw/exec';
+var apiFrameSeq = 0;
+function apiCall(action, fields, done){
+  var name = 'aiSaferApi_' + (++apiFrameSeq);
+  var frame = document.createElement('iframe');
+  frame.name = name;
+  frame.style.display = 'none';
+  document.body.appendChild(frame);
+  var form = document.createElement('form');
+  form.method = 'POST';
+  form.action = API_URL;
+  form.target = name;
+  form.style.display = 'none';
+  var all = fields || {};
+  all.api = '1';
+  all.action = action;
+  Object.keys(all).forEach(function(k){
+    var input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = k;
+    input.value = all[k] === undefined || all[k] === null ? '' : String(all[k]);
+    form.appendChild(input);
+  });
+  document.body.appendChild(form);
+  var finished = false;
+  function cleanup(){
+    if (finished) return;
+    finished = true;
+    window.removeEventListener('message', onMessage);
+    clearTimeout(timer);
+    frame.remove();
+    form.remove();
+  }
+  function onMessage(e){
+    if (e.source !== frame.contentWindow || !e.data || e.data.source !== 'AI-SAFER') return;
+    var result = e.data.result || {ok:false, msg:'Respons pelayan tidak sah.'};
+    cleanup();
+    done(result);
+  }
+  window.addEventListener('message', onMessage);
+  var timer = setTimeout(function(){
+    cleanup();
+    done({ok:false, msg:'Sambungan ke pelayan tamat masa. Cuba lagi.'});
+  }, 30000);
+  form.submit();
+}
+
+
+/* Baca hanya sifat sendiri, supaya kaedah terbina String/Object tidak bocor ke UI. */
+function own(k){ return (STATE && Object.prototype.hasOwnProperty.call(STATE,k)) ? STATE[k] : ''; }
+
+/* ============ INSTRUMEN ============ */
+var K012 = [{v:0,n:'0',l:'Tidak pasti'},{v:1,n:'1',l:'Tidak'},{v:2,n:'2',l:'Ya'}];
+var LIK  = [{v:1,n:'1',l:'Sangat tidak setuju'},{v:2,n:'2',l:'Tidak setuju'},
+            {v:3,n:'3',l:'Tidak pasti'},{v:4,n:'4',l:'Bersetuju'},{v:5,n:'5',l:'Sangat bersetuju'}];
+
+var B = [
+ ['Adakah anda pernah mendengar berkenaan pengurusan bencana sebelum ini?','Have you heard about disaster management before?'],
+ ['Bencana boleh didefinisikan sebagai satu situasi yang mengganggu sistem jagaan kesihatan apabila ianya berlaku.','Disaster is defined as a situation that overwhelms the health care system when it occurs.'],
+ ['Pengurusan bencana melibatkan semua tindakan yang diambil bagi mengurangkan kerosakan yang berkemungkinan akan berlaku.','Disaster management involves all measures taken to reduce the likelihood of damage that will occur.'],
+ ['Banjir boleh diklasifikasikan sebagai bencana alam semulajadi.','Floods can be classified as a natural disaster.'],
+ ['Kebuluran adalah salah satu jenis bencana akibat dari perbuatan manusia.','Famine is a type of man-made disaster.'],
+ ['Berdasarkan garispanduan pengurusan bencana di Malaysia, pengurusan bencana dibahagikan kepada lima (5) fasa.','Based on Malaysia guideline, disaster management phase can be divided into five (5) phase.'],
+ ['Aktiviti mitigasi berlaku sebelum terjadinya sesuatu bencana.','Mitigation activities take place before disaster happen.'],
+ ['Pemantauan paras air adalah antara aktiviti yang berlaku dalam fasa mitigasi.','Water level monitoring is an activity in the mitigation phase.'],
+ ['Aktiviti kesiapsiagaan berlaku di sepanjang waktu bencana.','Preparedness activities takes place during disaster event.'],
+ ['Simulasi lapangan dalam pelan pengurusan bencana adalah aktiviti yang dijalankan dalam fasa kesiapsiagaan.','Field simulation of disaster management plan is an activity in the preparedness.'],
+ ['Respon adalah dengan menukarkan pelan kesiapsiagaan menjadi suatu bentuk tindakan.','The response is to put your preparedness plans into action.'],
+ ['Aktiviti dalam fasa pemulihan (recovery) berlaku sepanjang terjadinya kejadian bencana.','Activities in recovery phase take place during a disaster event.'],
+ ['Fasa pemulihan termasuklah tindakan yang diambil untuk mengembalikan keadaan menjadi kembali normal atau lebih baik.','Recovery includes actions taken to return to a normal or an even safer situation.'],
+ ['Bekalan air dan sanitasi boleh memberikan kesan terhadap kesihatan akibat dari bencana yang berlaku.','Water supply and sanitation can give impact to health that results from the disaster.'],
+ ['Kejadian bencana tidak akan meningkatkan risiko wujudnya kejadian penyakit berjangkit.','Disaster will not increase the risk of developing the communicable disease.']
+];
+
+var C = [
+ ['Pada fikiran saya, dalam fasa mitigasi seseorang kakitangan perubatan/kesihatan hendaklah terlibat dengan pengurusan risiko ke atas kawasan masing-masing.','In my opinion, in mitigation phase, medical/health personnel shall be included in performing a risk assessment to the respective area.'],
+ ['Pada fikiran saya, adalah bagus memberi pendedahan kepada kakitangan perubatan/kesihatan dengan kesan jangkamasa panjang kejadian bencana seperti kesan ke atas kesihatan mental.','I think it is better for medical/health personnel to be educated on the long-term impact of a disaster such as mental health problem.'],
+ ['Adalah sangat penting bagi saya untuk membaca dan memahami pelan pengurusan bencana di institusi ini.','It is important for me to read and understand on my institutions\u2019 disaster management plan.'],
+ ['Saya mempercayai bahawa kolaborasi di antara kakitangan perubatan dan kesihatan adalah amat diperlukan bagi menangani mangsa kejadian bencana.','I believe that collaboration among medical and health personnel is needed in managing disaster victims.'],
+ ['Saya merasakan bahawa adalah sukar untuk bekerjasama dengan lain-lain agensi (selain KKM) dalam menguruskan mangsa bencana.','I find it hard to collaborate with other agencies (other than MOH) in managing disaster victims.'],
+ ['Saya bersedia menjadi sukarelawan dalam mana-mana respon terhadap bencana.','I am willing to volunteer for any disaster response.'],
+ ['Saya berasa bimbang tentang kesan negatif bencana (contohnya seperti kecederaan, post-traumatic stress disorder) ke atas saya sekiranya menjadi sukarelawan bagi bantuan atau respon ketika bencana.','I am worried about the negative effects of disaster (e.g.: injury, post-traumatic stress disorder) to me if I volunteer in disaster response or relief.'],
+ ['Saya merasakan bahawa kakitangan perubatan/kesihatan tidak seharusnya terlibat dalam fasa pemulihan kejadian bencana.','I feel that medical/health personnel should not get involved during the disaster recovery phase.'],
+ ['Adalah menjadi tanggungjawab saya untuk menangani mana-mana mangsa kejadian bencana.','It is become my responsibilities to deal with any disaster victims.'],
+ ['Saya merasakan bahawa bukanlah menjadi tanggungjawab saya untuk membantu mangsa kejadian bencana memenuhi keperluan asas mereka (contohnya seperti tempat tinggal, bekalan air, pakaian dan sebagainya).','I feel that it is not my responsibilities to assist disaster victims regarding their basic needs (e.g.: place to stay, water supply, clothing, etc.)']
+];
+
+var D = {
+ 1:['Adakah anda mengetahui di mana terletaknya pelan pengurusan bencana?','Do you know where the disaster plan is located?'],
+ 2:['Adakah pelan pengurusan bencana institusi anda terletak di tempat yang mudah di akses?','Does the disaster management plan of your institution is located in a place that is easy to be accessed?'],
+ 4:['Pernahkah anda membaca pelan respon bencana yang lain selain dari yang terdapat di institusi anda?','Have you read other disaster response plan apart from your institution plan?'],
+ 5:['Pernahkah anda membaca atau melayari internet untuk mengetahui lebih lanjut berkenaan pengurusan bencana?','Have you read or browse the internet to know more about disaster management?'],
+ 6:['Adakah anda telah bersedia untuk terlibat dalam apa jua respon bencana?','Have you prepared yourself to be involved in any disaster response?'],
+ 7:['Adakah anda bersedia untuk terlibat dalam latihan pengurusan bencana?','Are you willing to be involved in disaster training?'],
+ 8:['Adakah anda lazim dengan sistem saringan di lapangan (field triage) yang digunakan ketika berlakunya bencana?','Are you familiar with the field triage system that is used during a disaster?'],
+ 9:['Adakah latihan / pendidikan berkenaan bencana yang dijalankan melibatkan kakitangan perubatan dan kesihatan awam?','Does disaster education / training conducted involved medical and health personnel?'],
+ 10:['Adakah latihan / pendidikan berkenaan bencana yang dijalankan melibatkan lain-lain agensi? (contohnya: pasukan Bomba dan Penyelamat, Jabatan Pertahanan Awam Malaysia, pihak berkuasa tempatan)','Does disaster training / education conducted in your institution involve other agencies? (e.g.: fire rescue team, JPAM, local authorities)'],
+ 11:['Adakah terdapat pelan pengurusan bencana yang spesifik di institusi anda yang disediakan spesifik bagi sesuatu jenis bencana? (contohnya untuk banjir, kebakaran dan penyakit)','Is there any specific disaster management plan catering for different specific type of event in your institution? (e.g.: for flood, fire, communicable disease)']
+};
+
+var FREQ = [
+ {v:'Lebih dua kali setahun',l:'Lebih dua (2) kali setahun'},
+ {v:'Dua kali setahun',l:'Dua (2) kali setahun'},
+ {v:'Setahun sekali',l:'Setahun sekali'},
+ {v:'Tidak pernah',l:'Tidak pernah'}
+];
+var D12ROWS = [
+ ['i','Syarahan didaktik','contoh: ceramah berkenaan pengurusan bencana yang diberikan oleh doktor atau jururawat semasa CNE'],
+ ['ii','Drill bencana','contoh: drill kebakaran'],
+ ['iii','Latihan tabletop','contoh: aliran komunikasi semasa berlaku bencana'],
+ ['iv','Latihan functional','contoh: latihan fizikal tanpa kehadiran mangsa bencana'],
+ ['v','Simulasi lapangan','contoh: latihan yang melibatkan banyak agensi yang dijalankan di tempat kejadian']
+];
+
+/* Sembilan kategori jawatan, verbatim daripada borang UAT Fasa 1 / sistem TAM Fasa 2. */
+var PROFESI = [
+ 'Pakar Perubatan Kesihatan Awam (PPKA)',
+ 'Pakar Perubatan Kecemasan',
+ 'Pakar Perubatan Kesihatan Keluarga',
+ 'Pegawai Perubatan',
+ 'Pegawai Kesihatan Persekitaran (PKP)',
+ 'Penolong Pegawai Kesihatan Persekitaran (PPKP)',
+ 'Penolong Pegawai Perubatan (PPP)',
+ 'Jururawat',
+ 'Lain-lain'
+];
+
+/* ============ KEADAAN ============ */
+var ans = (STATE.draft && STATE.draft.ans) || {};
+var demo = (STATE.draft && STATE.draft.demo) || {tempat:[{a:'',b:''}], bencana:[{a:'',b:''}], latihan:[]};
+var screens = [], idx = 0, t0 = Date.now(), saveTimer = null, sending = false;
+
+var app = document.getElementById('app');
+var foot = document.getElementById('foot');
+var btnNext = document.getElementById('btnNext');
+var btnBack = document.getElementById('btnBack');
+
+/* ============ UTIL ============ */
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function set(k,v){ans[k]=v;queueSave();}
+function get(k){return ans[k];}
+
+function optRow(key,opts,stack){
+  var h='<div class="opts'+(stack?' stack':'')+'" data-key="'+key+'">';
+  opts.forEach(function(o){
+    var on = String(get(key))===String(o.v);
+    h+='<button type="button" class="opt" role="button" aria-pressed="'+on+'" data-v="'+esc(o.v)+'">'
+      +(o.n?'<span class="n">'+o.n+'</span>':'')+'<span>'+esc(o.l)+'</span></button>';
+  });
+  return h+'</div>';
+}
+function item(no,key,txt,opts,stack){
+  return '<div class="q" data-req="'+key+'"><div class="qh"><span class="qn mono">'+no+'</span>'
+    +'<span class="qt">'+esc(txt[0])+'<span class="en">'+esc(txt[1])+'</span></span></div>'
+    +optRow(key,opts,stack)+'</div>';
+}
+
+/* ============ SKRIN ============ */
+function scIntro(){
+  var first = STATE.stage==='T0';
+  return {id:'intro',req:false,html:function(){
+    return '<div class="card">'
+    +'<h1>Salam, '+esc(STATE.nama)+'</h1>'
+    +'<p class="sub" style="margin-bottom:18px">Kod peserta anda: <span class="mono">'+esc(STATE.id)+'</span></p>'
+    +(first
+      ? '<p>Borang ini mengukur pengetahuan, sikap dan amalan anda berkenaan kesiapsiagaan bencana banjir. Ia mengambil masa kira-kira 12 minit.</p>'
+        +'<p>Anda akan menjawab borang yang sama sebanyak tiga kali: sebelum menggunakan AI-SAFER Simulator, sejurus selepas, dan empat minggu kemudian. Gunakan pautan yang sama setiap kali.</p>'
+        +'<div class="note">Tiada jawapan betul atau salah bagi Bahagian Sikap dan Amalan. Jawapan anda dipautkan melalui kod peserta sahaja, bukan nama, dan dilaporkan dalam bentuk agregat.</div>'
+        +'<p style="font-size:14.5px;color:var(--slate)">Dengan meneruskan, anda mengesahkan bahawa anda telah membaca Lembaran Maklumat Peserta dan bersetuju untuk menyertai kajian ini secara sukarela. Anda boleh menarik diri pada bila-bila masa tanpa memberi sebab.</p>'
+      : '<p>Ini ialah sesi '+(STATE.stage==='T1'?'kedua':'ketiga')+'. Anda akan menjawab set soalan yang sama seperti sebelum ini.</p>'
+        +'<div class="note">Jawab berdasarkan keadaan anda pada hari ini. Tidak perlu cuba mengingati jawapan anda yang lepas.</div>')
+    +'<p class="mini">Semua item wajib dijawab. Jawapan anda disimpan secara automatik.</p>'
+    +'</div>';
+  }};
+}
+
+function scDemo(){
+  return {id:'A',req:true,html:function(){
+    var h='<div class="card"><h2>Bahagian A</h2><p class="sub">Data sosiodemografik</p></div><div class="card">';
+    h+='<label class="f">1. Umur <span class="en">Age</span></label><input type="number" id="d_umur" value="'+esc(demo.umur||'')+'" min="18" max="70">';
+    h+='<label class="f">2. Jantina <span class="en">Gender</span></label>'
+      +'<div class="opts" data-demo="jantina">'
+      +['Lelaki','Perempuan'].map(function(g){return '<button type="button" class="opt" aria-pressed="'+(demo.jantina===g)+'" data-v="'+g+'"><span>'+g+'</span></button>';}).join('')
+      +'</div>';
+    h+='<label class="f">3. Taraf pendidikan tertinggi <span class="en">Highest level of education</span></label>'
+      +'<div class="opts stack" data-demo="pendidikan">'
+      +['Sijil','Diploma','Sarjana Muda','Sarjana','PhD / DrPH'].map(function(g){return '<button type="button" class="opt" aria-pressed="'+(demo.pendidikan===g)+'" data-v="'+g+'"><span>'+g+'</span></button>';}).join('')
+      +'</div>';
+    h+='<label class="f">4. Kategori perkhidmatan <span class="en">Professional category</span></label>'
+      +'<select id="d_prof" style="width:100%;font-family:\'DM Sans\',sans-serif;font-size:15px;color:var(--navy);border:1.5px solid var(--line);border-radius:8px;padding:11px 13px;background:#fff">'
+      +'<option value="">Sila pilih</option>'
+      +PROFESI.map(function(p){return '<option value="'+esc(p)+'"'+(demo.profesion===p?' selected':'')+'>'+esc(p)+'</option>';}).join('')
+      +'</select>';
+    h+='<label class="f">5. Tempat bertugas sepanjang tempoh bekerja <span class="en">Working place throughout your service</span></label><div id="repTempat"></div>';
+    h+='<label class="f">6. Adakah anda pernah terlibat dalam apa-apa jenis respon terhadap bencana? <span class="en">Have you ever been involved in any disaster response?</span></label>'
+      +'<div class="opts" data-demo="pernahRespon">'
+      +['Ya','Tidak'].map(function(g){return '<button type="button" class="opt" aria-pressed="'+(demo.pernahRespon===g)+'" data-v="'+g+'"><span>'+g+'</span></button>';}).join('')
+      +'</div><div id="wrapBencana" class="'+(demo.pernahRespon==='Ya'?'':'hidden')+'" style="margin-top:12px"><p class="mini" style="margin-bottom:8px">Jenis bencana dan tahun berlaku</p><div id="repBencana"></div></div>';
+    h+='<label class="f">7. Adakah anda pernah menghadiri pendidikan / latihan berkenaan pengurusan bencana semenjak mula bekerja? <span class="en">Have you ever attended disaster management training / education since you work?</span></label>'
+      +'<div class="opts" data-demo="pernahLatihan">'
+      +['Ya','Tidak'].map(function(g){return '<button type="button" class="opt" aria-pressed="'+(demo.pernahLatihan===g)+'" data-v="'+g+'"><span>'+g+'</span></button>';}).join('')
+      +'</div><div id="wrapLatihan" class="'+(demo.pernahLatihan==='Ya'?'':'hidden')+'" style="margin-top:12px"><p class="mini" style="margin-bottom:8px">Tandakan semua yang berkenaan</p>'
+      +'<div class="opts stack" data-multi="latihan">'
+      +['Syarahan didaktik','Latihan tabletop','Simulasi lapangan','Latihan functional','Latihan drill bencana']
+        .map(function(g){return '<button type="button" class="opt" aria-pressed="'+(demo.latihan.indexOf(g)>-1)+'" data-v="'+g+'"><span>'+g+'</span></button>';}).join('')
+      +'</div></div>';
+    return h+'</div>';
+  },after:function(){
+    bindRep('repTempat','tempat','Tempat bertugas','Tempoh bertugas');
+    bindRep('repBencana','bencana','Jenis bencana','Tahun berlaku');
+    var u=document.getElementById('d_umur');
+    u.addEventListener('input',function(){demo.umur=u.value;queueSave();});
+    var p=document.getElementById('d_prof');
+    p.addEventListener('change',function(){demo.profesion=p.value;queueSave();});
+  },validate:function(){
+    if(!demo.umur||!demo.jantina||!demo.pendidikan||!demo.profesion||!demo.pernahRespon||!demo.pernahLatihan){
+      return 'Sila lengkapkan soalan 1, 2, 3, 4, 6 dan 7.';
+    }
+    return null;
+  }};
+}
+
+function bindRep(hostId,key,pa,pb){
+  var host=document.getElementById(hostId);
+  if(!host)return;
+  function draw(){
+    host.innerHTML = demo[key].map(function(r,i){
+      return '<div class="rep"><input type="text" placeholder="'+pa+'" value="'+esc(r.a)+'" data-i="'+i+'" data-f="a">'
+           + '<input type="text" placeholder="'+pb+'" value="'+esc(r.b)+'" data-i="'+i+'" data-f="b"></div>';
+    }).join('') + (demo[key].length<5?'<button type="button" class="addbtn">+ Tambah baris</button>':'');
+    host.querySelectorAll('input').forEach(function(el){
+      el.addEventListener('input',function(){demo[key][+el.dataset.i][el.dataset.f]=el.value;queueSave();});
+    });
+    var ab=host.querySelector('.addbtn');
+    if(ab)ab.addEventListener('click',function(){demo[key].push({a:'',b:''});draw();});
+  }
+  draw();
+}
+
+function scB(){
+  return {id:'B',req:true,html:function(){
+    var h='<div class="card"><h2>Bahagian B</h2><p class="sub">Pengetahuan &mdash; <span style="font-style:italic">Knowledge</span></p></div><div class="card">';
+    h+='<div class="note">Pilih <span class="mono">0</span> Tidak pasti, <span class="mono">1</span> Tidak, atau <span class="mono">2</span> Ya bagi setiap pernyataan.</div>';
+    B.forEach(function(t,i){
+      h+=item(i+1,'B'+(i+1),t,K012);
+      if(i===0){
+        h+='<div style="margin:-6px 0 4px"><input type="text" id="b1src" placeholder="Jika Ya, nyatakan sumber maklumat" value="'+esc(get('B1_sumber')||'')+'"></div>';
+      }
+    });
+    return h+'</div>';
+  },after:function(){
+    var el=document.getElementById('b1src');
+    el.addEventListener('input',function(){set('B1_sumber',el.value);});
+  }};
+}
+
+function scC(){
+  return {id:'C',req:true,html:function(){
+    var h='<div class="card"><h2>Bahagian C</h2><p class="sub">Sikap &mdash; <span style="font-style:italic">Attitude</span></p></div><div class="card">';
+    h+='<div class="note">Nyatakan tahap persetujuan anda, dari <span class="mono">1</span> sangat tidak setuju hingga <span class="mono">5</span> sangat bersetuju.</div>';
+    C.forEach(function(t,i){ h+=item(i+1,'C'+(i+1),t,LIK,true); });
+    return h+'</div>';
+  }};
+}
+
+function scD(){
+  return {id:'D',req:true,html:function(){
+    var h='<div class="card"><h2>Bahagian D</h2><p class="sub">Amalan &mdash; <span style="font-style:italic">Practice</span></p></div><div class="card">';
+    h+='<div class="note">Pilih <span class="mono">0</span> Tidak pasti, <span class="mono">1</span> Tidak, atau <span class="mono">2</span> Ya bagi setiap pernyataan.</div>';
+
+    h+=item(1,'D1',D[1],K012);
+    h+='<div style="margin:-6px 0 4px"><input type="text" id="d1loc" placeholder="Jika Ya, nyatakan lokasi" value="'+esc(get('D1_lokasi')||'')+'"></div>';
+    h+=item(2,'D2',D[2],K012);
+
+    h+='<div class="q" data-req="D3_baca"><div class="qh"><span class="qn mono">3</span><span class="qt">'
+      +'Adakah anda pernah membaca mengenai pelan pengurusan bencana di institusi anda?'
+      +'<span class="en">Have you read your institution disaster management plan?</span></span></div>'
+      +optRow('D3_baca',[{v:'Belum pernah',l:'Belum pernah'},{v:'Kurang dari setahun yang lalu',l:'Ya, kurang dari setahun yang lalu'},{v:'Lebih dari setahun yang lalu',l:'Ya, lebih dari setahun yang lalu'}],true)
+      +'</div>';
+
+    [4,5,6,7,8,9,10,11].forEach(function(n){ h+=item(n,'D'+n,D[n],K012); });
+    h+='<div style="margin:-6px 0 4px"><input type="text" id="d11sp" placeholder="Jika Ya, nyatakan jenis bencana" value="'+esc(get('D11_nyatakan')||'')+'"></div>';
+
+    h+='<div class="q"><div class="qh"><span class="qn mono">12</span><span class="qt">'
+      +'Adakah pendidikan dan latihan berkenaan bencana dijalankan secara teratur di institusi anda? Nyatakan kekerapan bagi setiap jenis.'
+      +'<span class="en">Is disaster training / education conducted regularly in your institution? State the frequency for each type.</span></span></div>';
+    D12ROWS.forEach(function(r){
+      h+='<div class="grid5"><div class="gt"><strong>'+r[0]+'.</strong> '+esc(r[1])+'<span class="en">'+esc(r[2])+'</span></div>'
+        +optRow('D12_'+r[0],FREQ.map(function(f){return {v:f.v,l:f.l};}),true)+'</div>';
+    });
+    h+='</div>';
+    return h+'</div>';
+  },after:function(){
+    [['d1loc','D1_lokasi'],['d11sp','D11_nyatakan']].forEach(function(p){
+      var el=document.getElementById(p[0]);
+      el.addEventListener('input',function(){set(p[1],el.value);});
+    });
+  }};
+}
+
+/* ============ ALIRAN ============ */
+function build(){
+  screens=[scIntro()];
+  if(STATE.stage==='T0') screens.push(scDemo());
+  screens.push(scB(),scC(),scD());
+}
+
+function render(){
+  var s=screens[idx];
+  app.innerHTML=s.html();
+  window.scrollTo(0,0);
+
+  app.querySelectorAll('.opts[data-key]').forEach(function(g){
+    g.querySelectorAll('.opt').forEach(function(b){
+      b.addEventListener('click',function(){
+        g.querySelectorAll('.opt').forEach(function(x){x.setAttribute('aria-pressed','false');});
+        b.setAttribute('aria-pressed','true');
+        var q=g.closest('.q'); if(q)q.classList.remove('err');
+        set(g.dataset.key,b.dataset.v);
+      });
+    });
+  });
+  app.querySelectorAll('.opts[data-demo]').forEach(function(g){
+    g.querySelectorAll('.opt').forEach(function(b){
+      b.addEventListener('click',function(){
+        g.querySelectorAll('.opt').forEach(function(x){x.setAttribute('aria-pressed','false');});
+        b.setAttribute('aria-pressed','true');
+        demo[g.dataset.demo]=b.dataset.v; queueSave();
+        if(g.dataset.demo==='pernahRespon')
+          document.getElementById('wrapBencana').classList.toggle('hidden',b.dataset.v!=='Ya');
+        if(g.dataset.demo==='pernahLatihan')
+          document.getElementById('wrapLatihan').classList.toggle('hidden',b.dataset.v!=='Ya');
+      });
+    });
+  });
+  app.querySelectorAll('.opts[data-multi]').forEach(function(g){
+    g.querySelectorAll('.opt').forEach(function(b){
+      b.addEventListener('click',function(){
+        var on=b.getAttribute('aria-pressed')==='true';
+        b.setAttribute('aria-pressed',String(!on));
+        var v=b.dataset.v, i=demo.latihan.indexOf(v);
+        if(on&&i>-1)demo.latihan.splice(i,1); else if(!on&&i===-1)demo.latihan.push(v);
+        queueSave();
+      });
+    });
+  });
+
+  if(s.after)s.after();
+
+  btnBack.classList.toggle('hidden',idx===0);
+  btnNext.textContent = (idx===screens.length-1) ? 'Hantar jawapan' : 'Seterusnya';
+  foot.classList.remove('hidden');
+  document.getElementById('step').textContent='Bahagian '+(idx+1)+' daripada '+screens.length;
+  progress(idx/screens.length);
+}
+
+function progress(p){
+  var pct=Math.max(0,Math.min(1,p))*100;
+  document.getElementById('fill').style.width=pct+'%';
+  document.getElementById('crest').style.left=pct+'%';
+}
+
+function validate(){
+  var s=screens[idx], bad=null;
+  app.querySelectorAll('.q[data-req]').forEach(function(q){
+    var k=q.dataset.req;
+    if(ans[k]===undefined||ans[k]===''){ q.classList.add('err'); if(!bad)bad=q; }
+  });
+  if(bad){
+    bad.scrollIntoView({behavior:'smooth',block:'center'});
+    flash('Sila jawab semua item sebelum meneruskan.');
+    return false;
+  }
+  if(s.validate){
+    var m=s.validate();
+    if(m){ flash(m); return false; }
+  }
+  return true;
+}
+
+function flash(msg){
+  var e=document.getElementById('saved');
+  e.textContent=msg; e.style.color='#B91C1C'; e.style.opacity='1';
+  setTimeout(function(){e.style.opacity='0';e.style.color='';},3200);
+}
+
+btnNext.addEventListener('click',function(){
+  if(idx>0 && !validate()) return;
+  if(idx<screens.length-1){ idx++; render(); return; }
+  submit();
+});
+btnBack.addEventListener('click',function(){ if(idx>0){idx--;render();} });
+
+/* ============ AUTOSAVE ============ */
+function queueSave(){
+  clearTimeout(saveTimer);
+  saveTimer=setTimeout(function(){
+    apiCall('simpanDraf', {
+      token:STATE.token,
+      tp:STATE.stage,
+      data:JSON.stringify({ans:ans,demo:demo})
+    }, function(r){
+      if(r&&r.ok){
+        var e=document.getElementById('saved');
+        e.textContent='Disimpan'; e.style.opacity='1';
+        setTimeout(function(){e.style.opacity='0';},1400);
+      }
+    });
+  },1400);
+}
+
+/* ============ HANTAR ============ */
+function submit(){
+  if(sending)return;
+  sending=true;
+  btnNext.disabled=true;
+  btnNext.textContent='Menghantar…';
+
+  if(demo.tempat) demo.tempatStr = demo.tempat.filter(function(r){return r.a;}).map(function(r){return r.a+' ('+r.b+')';}).join('; ');
+  if(demo.bencana) demo.bencanaStr = demo.bencana.filter(function(r){return r.a;}).map(function(r){return r.a+' ('+r.b+')';}).join('; ');
+
+  var payload = STATE.stage==='T0' ? {
+    umur:demo.umur, jantina:demo.jantina, pendidikan:demo.pendidikan, profesion:demo.profesion||'',
+    tempat:demo.tempatStr||'', pernahRespon:demo.pernahRespon,
+    senaraiBencana:demo.bencanaStr||'', pernahLatihan:demo.pernahLatihan,
+    jenisLatihan:(demo.latihan||[]).join('; ')
+  } : null;
+
+  var dur = Math.round((Date.now()-t0)/1000);
+  apiCall('hantar', {
+    token:STATE.token,
+    tp:STATE.stage,
+    data:JSON.stringify(ans),
+    demo:payload ? JSON.stringify(payload) : '',
+    dur:String(dur)
+  }, function(r){
+    if(r&&r.ok) done();
+    else { sending=false; btnNext.disabled=false; btnNext.textContent='Hantar jawapan'; flash((r&&r.msg)||'Penghantaran gagal. Sila cuba lagi.'); }
+  });
+}
+
+function done(){
+  progress(1);
+  foot.classList.add('hidden');
+  document.getElementById('step').textContent='Selesai';
+  var next = STATE.stage==='T0'
+    ? 'Anda kini boleh mula menggunakan AI-SAFER Simulator. Borang seterusnya akan terbuka melalui pautan yang sama setelah anda selesai.'
+    : (STATE.stage==='T1'
+      ? 'Sesi susulan akan terbuka empat minggu dari hari ini. Kami akan menghantar peringatan melalui emel. Simpan pautan yang sama.'
+      : 'Ini sesi terakhir anda. Terima kasih atas sumbangan anda kepada kajian ini.');
+  app.innerHTML='<div class="card center"><div class="big">\u2713</div><h2>Jawapan diterima</h2>'
+    +'<p class="sub" style="margin-top:10px">'+next+'</p></div>';
+}
+
+/* ============ MULA ============ */
+function renderBlocked(){
+  var ok = own('ok')===true, stage = own('stage'), sub = own('sub');
+  progress(stage==='SELESAI'?1:0);
+  document.getElementById('step').textContent='';
+  foot.classList.add('hidden');
+  var icon = stage==='SELESAI'?'\u2713':(ok?'\u23F1':'\u26A0');
+  app.innerHTML='<div class="card center"><div class="big">'+icon+'</div>'
+    +'<h2>'+(ok?esc(own('nama')||'Terima kasih'):'Pautan tidak sah')+'</h2>'
+    +'<p class="sub" style="margin-top:10px">'+esc(own('msg'))+'</p>'
+    +(sub?'<p class="sub" style="margin-top:10px">'+esc(sub)+'</p>':'')
+    +'</div>';
+}
+
+function renderMasuk(err){
+  progress(0);
+  document.getElementById('step').textContent='';
+  foot.classList.add('hidden');
+  app.innerHTML='<div class="card">'
+    +'<h1>Soal selidik AI-SAFER</h1>'
+    +'<p class="sub" style="margin-bottom:20px">Masukkan nombor telefon anda untuk meneruskan. '
+    +'Kami menggunakannya untuk mengenal pasti sesi anda sahaja.</p>'
+    +(err?'<div class="warn">'+esc(err)+'</div>':'')
+    +'<input type="tel" id="masukTel" inputmode="numeric" placeholder="Contoh: 0123456789" autocomplete="tel">'
+    +'<p class="mini">Nombor telefon tidak disimpan bersama jawapan anda.</p>'
+    +'<button class="go" id="btnMasuk" style="width:100%;margin-top:18px">Teruskan</button>'
+    +'</div>';
+
+  var inp=document.getElementById('masukTel');
+  var btn=document.getElementById('btnMasuk');
+  function go(){
+    var v=inp.value.trim();
+    if(!v){ renderMasuk('Sila masukkan nombor telefon anda.'); return; }
+    btn.disabled=true; btn.textContent='Menyemak…';
+    apiCall('masuk', {input:v}, function(r){
+      if(r&&r.ok){ STATE=r; confirmNama(); }
+      else { renderMasuk((r&&r.msg)||'Tidak dapat menyemak. Cuba lagi.'); }
+    });
+  }
+  btn.addEventListener('click',go);
+  inp.addEventListener('keydown',function(e){ if(e.key==='Enter') go(); });
+  inp.focus();
+}
+
+function confirmNama(){
+  app.innerHTML='<div class="card center" style="padding:44px 24px">'
+    +'<p class="sub" style="margin-bottom:6px">Adakah ini anda?</p>'
+    +'<h2 style="margin-bottom:22px">'+esc(own('nama'))+'</h2>'
+    +'<button class="go" id="ya" style="width:100%">Ya, teruskan</button>'
+    +'<button class="back" id="bukan" style="width:100%;margin-top:10px">Bukan saya</button>'
+    +'</div>';
+  document.getElementById('ya').addEventListener('click',boot);
+  document.getElementById('bukan').addEventListener('click',function(){
+    renderMasuk('Semak semula nombor telefon anda, atau hubungi penyelidik.');
+  });
+}
+
+function boot(){
+  var stage = own('stage');
+  if(stage==='MASUK'){ renderMasuk(); return; }
+  if(own('ok')!==true || ['TUNGGU','SELESAI','TUTUP'].indexOf(stage)>-1){ renderBlocked(); return; }
+
+  var d = own('draft') || null;
+  ans  = (d && d.ans)  || {};
+  demo = (d && d.demo) || {tempat:[{a:'',b:''}], bencana:[{a:'',b:''}], latihan:[]};
+  if(!demo.tempat)  demo.tempat=[{a:'',b:''}];
+  if(!demo.bencana) demo.bencana=[{a:'',b:''}];
+  if(!demo.latihan) demo.latihan=[];
+
+  idx=0; t0=Date.now(); sending=false;
+  btnNext.disabled=false;
+  build(); render();
+}
+
+boot();
+</script>
+</body>
+</html>
